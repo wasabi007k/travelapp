@@ -10,5 +10,7 @@ class UsersController < ApplicationController
   end
 
   def edit
+    #user一人のidを見つけて@userに代入
+    @user = User.find(params[:id])
   end
 end
