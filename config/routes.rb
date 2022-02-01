@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   devise_for :users
   root to: "home#index"
-  #ユーザ関係のルート作成
+  #ユーザーのルート作成
   resources :users
+  #スケジュールのルート作成
+  resources :schedules
 end
