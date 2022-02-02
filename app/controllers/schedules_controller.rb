@@ -1,11 +1,4 @@
 class SchedulesController < ApplicationController
-  def index
-  end
-
-  def show
-    @schedule = Schedule.find(params[:id])
-  end
-
   def new
     @schedule = Schedule.new
   end
@@ -19,7 +12,34 @@ class SchedulesController < ApplicationController
     end
   end
 
+  def index
+    @schedules = Schedule.all.order(id: "DESC")
+  end
+
+  def show
+    @schedule = Schedule.find(params[:id])
+  end
+
   def edit
+    @schedule = Schedule.find(params[:id])
+    if @schedule.user != current_user
+        redirect_to schedules_path, alert: "不正なアクセスです。"
+    end
+  end
+
+  def update
+    @schedule = Schedule.find(params[:id])
+    if @schedule.update(schedule_params)
+      redirect_to schedule_path(@schedule), notice: "スケジュールを更新しました。"
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    schedule = Schedule.find(params[:id])
+    schedule.destroy
+    redirect_to user_path(schedule.user), notice: "スケジュールを削除しました。"
   end
 
   private

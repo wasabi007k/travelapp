@@ -41,15 +41,18 @@
           <div class="navbar-end">
             <div class="navbar-item">
               <div class="field is-grouped">
-                <p class="control">
+                <div class="navbar-item">
+                  <%= link_to "スケジュール一覧", schedules_path, class: "navbar-item button is-warning is-light" %>
+                </div>
+                <div class="navbar-item">
                   <%= link_to "ユーザー一覧", users_path, class: " button is-warning is-light" %>
-                </p>
-                <p class="control">
+                </div>
+                <div class="navbar-item">
                   <%= link_to "マイページ", user_path(current_user), class: "button is-warning is-light" %>
-                </p>
-                <p class="control">
+                </div>
+                <div class="navbar-item">
                   <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "button is-warning is-light" %>
-                </p>
+                </div>
               </div>
             </div>
           </div>
@@ -57,20 +60,17 @@
       <% else %>
         <div id="navbarExampleTransparentExample" class="navbar-menu">
           <div class="navbar-item">
-            <%= link_to "レシピ一覧", recipes_path, class: "navbar-item button is-warning is-light" %>
-          </div>
-          <div class="navbar-item">
-            <%= link_to "レシピグラマー一覧", users_path, class: "navbar-item button is-warning is-light" %>
+            <%= link_to "ユーザー一覧", users_path, class: "navbar-item button is-warning is-light" %>
           </div>
           <div class="navbar-end">
             <div class="navbar-item">
               <div class="field is-grouped">
-                <p class="control">
+                <div class="navbar-item">
                   <%= link_to "ログイン", new_user_session_path, class: "button is-warning is-light" %>
-                </p>
-                <p class="control">
+                </div>
+                <div class="navbar-item">
                   <%= link_to "新規登録", new_user_registration_path, class: "button is-warning is-light" %>
-                </p>
+                </div>
               </div>
             </div>
           </div>
