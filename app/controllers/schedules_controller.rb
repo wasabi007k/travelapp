@@ -1,4 +1,5 @@
 class SchedulesController < ApplicationController
+  before_action :authenticate_user!, except: [:index]
   def new
     @schedule = Schedule.new
   end
@@ -44,6 +45,9 @@ class SchedulesController < ApplicationController
 
   private
   def schedule_params
-    params.require(:schedule).permit(:title, :start_date, :end_date, :num_p, :image)
+    params.require(:schedule).permit(:title, :start_date, :end_date, :num_p, :image,
+                                    schedule_hoteldates_attributes:[:id, :schedule_id, :hotel_date,
+                                    :hotel_name, :hotel_url, :imgage, :hotel_price, :_destroy]
+                                    ).merge(user_id: current_user.id)
   end
 end

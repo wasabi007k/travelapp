@@ -31,9 +31,15 @@
                 <tr>
                   <td><%= simple_format @schedule.start_date.strftime("%Y年%-m月%-d日") %></td>
                   <td><%= simple_format @schedule.end_date.strftime("%Y年%-m月%-d日") %></td>
-                  <%= simple_format @schedule.num_p %>
+                  <td><%= simple_format @schedule.num_p %></td>
                 </tr>
               </table>
+              <% @schedule.schedule_hoteldates.each do |schedule_hoteldate| %>
+                <div class="datebox">
+                    <%= simple_format schedule_hoteldate.hotel_date.strftime("%-m月%-d日") %>
+                    <%= simple_format schedule_hoteldate.hotel_name %>
+                </div>
+              <% end %>
               <% if @schedule.user.id == current_user.id %>
                 <%= link_to "編集画面へ", edit_schedule_path(@schedule), class: "button is-success" %>
               <% end %>

@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_01_003224) do
+ActiveRecord::Schema.define(version: 2022_02_03_091652) do
+
+  create_table "schedule_hoteldates", force: :cascade do |t|
+    t.integer "schedule_id", null: false
+    t.date "hotel_date"
+    t.string "hotel_name"
+    t.text "hotel_url"
+    t.string "image_id"
+    t.integer "hotel_price"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["schedule_id"], name: "index_schedule_hoteldates_on_schedule_id"
+  end
 
   create_table "schedules", force: :cascade do |t|
     t.integer "user_id"
@@ -38,4 +50,5 @@ ActiveRecord::Schema.define(version: 2022_02_01_003224) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "schedule_hoteldates", "schedules"
 end

@@ -48,6 +48,25 @@
                 <%= f.label :image, "写真", class: "label" %>
                 <%= f.attachment_field :image, class: "input" %>
             </div>
+
+            <div class="plan-post">
+                <div class="recipe-ingredients">
+                    <div id="detail-association-insertion-point"></div>
+                    <div class="btn-right btn-adddate">
+                        <%= link_to_add_association "日付を追加", f, :schedule_hoteldates,
+                        class: "btn",
+                        data: {
+                        association_insertion_node: '#detail-association-insertion-point',
+                        association_insertion_method: 'append'
+                        }%>
+                    </div>
+                    <div class="mx-auto">
+                        <%= f.fields_for :schedule_hoteldates do |schedule_hoteldate| %>
+                            <%= render "schedules/schedule_hoteldate_fields", f: schedule_hoteldate %>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
             <%= f.submit '投稿', class: "button is-success" %>
         <% end %>
       </div>
