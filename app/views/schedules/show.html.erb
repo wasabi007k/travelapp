@@ -31,15 +31,42 @@
                 <tr>
                   <td><%= simple_format @schedule.start_date.strftime("%Y年%-m月%-d日") %></td>
                   <td><%= simple_format @schedule.end_date.strftime("%Y年%-m月%-d日") %></td>
-                  <td><%= simple_format @schedule.num_p %></td>
+                  <td><%= simple_format @schedule.num_p.to_s %></td>
                 </tr>
               </table>
+              <% @sum_hotel_price = 0 %>
               <% @schedule.schedule_hoteldates.each do |schedule_hoteldate| %>
                 <div class="datebox">
                     <%= simple_format schedule_hoteldate.hotel_date.strftime("%-m月%-d日") %>
                     <%= simple_format schedule_hoteldate.hotel_name %>
+                    
+                    <%= simple_format schedule_hoteldate.hotel_url %>
+                    <%= simple_format schedule_hoteldate.hotel_price.to_s.concat('円') %>
+                    <% @sum_hotel_price += schedule_hoteldate.hotel_price %>
+                    <div class = "planbox1">
+                        <% schedule_hoteldate.schedule_driveplans.each do |schedule_driveplan| %>
+                            <%= simple_format schedule_driveplan.start_time.strftime("%H:%M") %>
+                            <%= simple_format schedule_driveplan.d_address %>
+                            <%= simple_format schedule_driveplan.a_address %>
+                            
+                            <% params = URI.encode_www_form([["origin", schedule_driveplan.d_address], ["destination", schedule_driveplan.a_address]]) %>
+                    
+                            <% uri = URI.parse("https://maps.googleapis.com/maps/api/directions/json?#{params}&key=AIzaSyAhijDhCRPrT1XrK8ygyqMZsCzIWSdqpow") %>
+                            <% response = Net::HTTP.get_response(uri) %>
+                            <% result = JSON.parse(response.body) %>
+                            <% @distance = result["routes"][0]["legs"][0]["distance"]["text"] %>
+                            <% @duration = result["routes"][0]["legs"][0]["duration"]["text"] %>
+                            <%= @distance %>
+                            <%= @duration %>
+                        <% end %>
+                    </div>
                 </div>
+                
               <% end %>
+              <div class = "right">
+                <label>宿泊費用</label><br>
+                <%= simple_format @sum_hotel_price.to_s.concat('円') %>
+              </div>
               <% if @schedule.user.id == current_user.id %>
                 <%= link_to "編集画面へ", edit_schedule_path(@schedule), class: "button is-success" %>
               <% end %>

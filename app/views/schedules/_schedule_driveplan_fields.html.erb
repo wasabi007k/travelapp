@@ -1,0 +1,16 @@
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhijDhCRPrT1XrK8ygyqMZsCzIWSdqpow&callback=initMap" async defer></script>
+<div class="nested-fields">
+    <div class="planbox1">
+    <%= f.label :start_time, "出発時刻", class: "label" %>
+    <%= f.time_field :start_time, class: "form-control", placeholder: "開始時刻" %>
+        <%= f.label :d_address, "出発地点の名前または住所", class: "label" %>
+        <%= f.text_field :d_address, :size=>"60", class: "input" %>
+        <%= f.label :a_address, "到着地点の名前または住所", class: "label" %>
+        <%= f.text_field :a_address, :size=>"60", class: "input" %>
+        <%= @distance %> 
+        <%= @duration %>   
+        <div class="btn-right">
+            <%= link_to_remove_association "ドライブプランを削除",f , class: "btn btn-secondary btn-block" %>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  schedule_hoteldate: one
+  start_time: 2022-02-04 18:50:56
+  d_address: MyString
+  a_address: MyString
+  address: MyString
+  latitude: 1.5
+  longitude: 1.5
+  price: 1
+
+two:
+  schedule_hoteldate: two
+  start_time: 2022-02-04 18:50:56
+  d_address: MyString
+  a_address: MyString
+  address: MyString
+  latitude: 1.5
+  longitude: 1.5
+  price: 1

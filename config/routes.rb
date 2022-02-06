@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   resources :users
   #スケジュールのルート作成
   resources :schedules
+
 end

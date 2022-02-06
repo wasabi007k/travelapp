@@ -23,10 +23,11 @@
   <div class="container">
     <div class="columns is-centered">
       <div class="column is-6">
+        
         <%= form_with(model: @schedule, local: true) do |f| %>
             <div class="field">
                 <%= f.label :title, "旅のタイトル", class: "label" %>
-                <%= f.text_field :title, class: "input" %>
+                <%= f.text_field :title, :size=>"40",class: "input" %>
             </div>
             <div class="field">
                 <div class="form-inline">
@@ -41,8 +42,13 @@
                 </div>
             </div>
             <div class="field">
-                <%= f.label :num_p, "人数", class: "label" %>
-                <%= f.number_field :title, class: "input" %>
+                <%= f.label :num_p, "旅行する人数", class: "label" %>
+                <%= f.number_field :num_p, :size=>"10",class: "input" %>
+            </div>
+            <%= f.select :fuel_economy, [["軽自動車", 18], ["普通自動車", 15]], include_blank: "車の種類を選択" %>
+            <div class="field">
+                <%= f.label :fuel, "給油地域のガソリン代(L/km)", class: "label" %>
+                <%= f.number_field :fuel, :size=>"20",class: "input" %>
             </div>
             <div class="field">
                 <%= f.label :image, "写真", class: "label" %>

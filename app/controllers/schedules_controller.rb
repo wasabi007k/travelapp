@@ -2,10 +2,16 @@ class SchedulesController < ApplicationController
   before_action :authenticate_user!, except: [:index]
   def new
     @schedule = Schedule.new
+    @place = Place.new
+    @place = Place.all
+    
+    
+    
   end
-
+  
   def create
     @schedule = current_user.schedules.build(schedule_params)
+    
     if @schedule.save
       redirect_to schedule_path(@schedule), notice: "スケジュールを保存しました。"
     else
@@ -15,10 +21,13 @@ class SchedulesController < ApplicationController
 
   def index
     @schedules = Schedule.all.order(id: "DESC")
+    
   end
 
   def show
     @schedule = Schedule.find(params[:id])
+    
+    
   end
 
   def edit
@@ -45,9 +54,13 @@ class SchedulesController < ApplicationController
 
   private
   def schedule_params
-    params.require(:schedule).permit(:title, :start_date, :end_date, :num_p, :image,
+    params.require(:schedule).permit(:title, :start_date, :end_date, :num_p, :image, :address,
                                     schedule_hoteldates_attributes:[:id, :schedule_id, :hotel_date,
-                                    :hotel_name, :hotel_url, :imgage, :hotel_price, :_destroy]
+                                    :hotel_name, :hotel_url, :imgage, :hotel_price, :_destroy, 
+                                    schedule_driveplans_attributes:[:id, :schedule_hoteldate_id,
+                                    :start_time, :address, :price, :d_address, :a_address, :distance, :duration, :_destroy]]
                                     ).merge(user_id: current_user.id)
+    
   end
+  
 end
