@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  schedule: one
+  hotel_date: 2022-02-03
+  hotel_name: MyString
+  hotel_url: MyText
+  image_id: MyString
+  hotel_price: 1
+
+two:
+  schedule: two
+  hotel_date: 2022-02-03
+  hotel_name: MyString
+  hotel_url: MyText
+  image_id: MyString
+  hotel_price: 1
