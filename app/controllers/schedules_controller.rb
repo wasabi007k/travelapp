@@ -27,7 +27,6 @@ class SchedulesController < ApplicationController
   def show
     @schedule = Schedule.find(params[:id])
     
-    
   end
 
   def edit
@@ -49,18 +48,24 @@ class SchedulesController < ApplicationController
   def destroy
     schedule = Schedule.find(params[:id])
     schedule.destroy
+    
     redirect_to user_path(schedule.user), notice: "スケジュールを削除しました。"
   end
 
+  
+  
   private
   def schedule_params
     params.require(:schedule).permit(:title, :start_date, :end_date, :num_p, :image, :address,
+                                    :fuel, :fuel_economy,
                                     schedule_hoteldates_attributes:[:id, :schedule_id, :hotel_date,
-                                    :hotel_name, :hotel_url, :imgage, :hotel_price, :_destroy, 
+                                    :hotel_name, :hotel_url, :imgage, :hotel_price, :start_time, :_destroy, 
                                     schedule_driveplans_attributes:[:id, :schedule_hoteldate_id,
-                                    :start_time, :address, :price, :d_address, :a_address, :distance, :duration, :_destroy]]
+                                    :start_time, :address, :price, :d_address, :a_address, :distance, :duration, :d_name,
+                                    :a_name, :f_price, :_destroy]]
                                     ).merge(user_id: current_user.id)
     
   end
   
+
 end
