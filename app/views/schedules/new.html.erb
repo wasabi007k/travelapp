@@ -61,12 +61,10 @@
                         </div>
                         <%= f.label :fuel_economy, "車の種類(軽自動車または普通自動車)", class: "label" %>
                         <%= f.select :fuel_economy, [["軽自動車", 18], ["普通自動車", 15]], include_blank: "車の種類を選択" %>
-                        
                         <div class="field">
                             <%= f.label :image, "写真", class: "label" %>
                             <%= f.attachment_field :image, class: "input" %>
                         </div>
-
                         <div class="plan-post">
                             <div class="recipe-ingredients">
                                 <div id="detail-association-insertion-point"></div>

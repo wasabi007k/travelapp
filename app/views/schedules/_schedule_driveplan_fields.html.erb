@@ -32,8 +32,7 @@
             <%= f.time_field :s_time, size: "10" %> 
             <%= f.select :name, [["観光", "観光"], ["食事", "食事"]], include_blank: "ジャンルを選択" %>
             <%= f.label :s_time, "料金", class: "label" %>
-            <%= f.number_field :meal_price, size: "30" %> 
-
+            <%= f.number_field :meal_price, size: "30" %>
         </div>
         <div class="btn-right">
             <%= link_to_remove_association "プランを削除",f , class: "btn btn-secondary btn-block" %>

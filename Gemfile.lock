@@ -342,6 +342,7 @@ DEPENDENCIES
   gon
   jbuilder (~> 2.7)
   listen (~> 3.3)
+  omniauth
   omniauth-facebook
   omniauth-google-oauth2
   puma (~> 5.0)

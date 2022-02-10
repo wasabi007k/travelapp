@@ -14,8 +14,6 @@
             <%= f.number_field :hotel_price, :size=>"20",class: "input", placeholder: "料金" %>
             <%= f.label :start_time, "出発時間", class: "label" %>
             <%= f.time_field :start_time, :size=>"20",class: "input", placeholder: "料金" %>
-            
-
             <div class="btn-right btn-margin">
                 <%= link_to_add_association "プランを追加", f, :schedule_driveplans,
                 class: "btn btn-secondary btn-block",

@@ -66,5 +66,6 @@ gem 'gon' # コントローラーで定義したインスタンス変数をJavaS
 gem 'geocoder' # 住所から緯度経度を算出する。
 gem 'bootstrap', '~> 4.3.1'
 gem 'rails-ujs'
+gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
