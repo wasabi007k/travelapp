@@ -1,100 +1,143 @@
 <section class="hero is-success">
-  <div class="hero-body">
-    <div class="container">
-      <h1 class="title">
-        スケジュール
-      </h1>
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                スケジュール
+            </h1>
+        </div>
     </div>
-  </div>
 </section>
 <section class="section">
-  <div class="container">
-    <div class="columns is-centered">
-      <div class="column is-7">
-        <div class="card">
-          <div class="card-image">
-            <figure class="image is-4by3">
-              <%= attachment_image_tag @schedule, :image %>
-            </figure>
-          </div>
-          <div class="card-content">
-            <div class="media">
-              <div class="media-content">
-                <p class="title is-4"><%= @schedule.title %></p>
-              </div>
-            </div>
-            <div class="content">
-              <table class="table is-narrow">
-                <tr>
-                  <th>スケジュール</th>
-                </tr>
-                <tr>
-                  <td><%= simple_format @schedule.start_date.strftime("%Y年%-m月%-d日") %></td>
-                  <td><%= simple_format @schedule.end_date.strftime("%Y年%-m月%-d日") %></td>
-                  <td><%= simple_format @schedule.num_p.to_s %></td>
-                </tr>
-              </table>
-              <% @sum_hotel_price = 0 %>
-              <% @schedule.schedule_hoteldates.each do |schedule_hoteldate| %>
-                <div class="datebox">
-                    <%= simple_format schedule_hoteldate.hotel_date.strftime("%-m月%-d日") %>
-                    <%= simple_format schedule_hoteldate.hotel_name %>
-                    
-                    <%= simple_format schedule_hoteldate.hotel_url %>
-                    <%= simple_format schedule_hoteldate.hotel_price.to_s.concat('円') %>
-                    <% @sum_hotel_price += schedule_hoteldate.hotel_price %>
-                    <div class = "planbox1">
-                        <% schedule_hoteldate.schedule_driveplans.each do |schedule_driveplan| %>
-                            <%= simple_format schedule_driveplan.start_time.strftime("%H:%M") %>
-                            <%= simple_format schedule_driveplan.d_address %>
-                            <%= simple_format schedule_driveplan.a_address %>
-                            
-                            <% params = URI.encode_www_form([["origin", schedule_driveplan.d_address], ["destination", schedule_driveplan.a_address]]) %>
-                    
-                            <% uri = URI.parse("https://maps.googleapis.com/maps/api/directions/json?#{params}&key=AIzaSyAhijDhCRPrT1XrK8ygyqMZsCzIWSdqpow") %>
-                            <% response = Net::HTTP.get_response(uri) %>
-                            <% result = JSON.parse(response.body) %>
-                            <% @distance = result["routes"][0]["legs"][0]["distance"]["text"] %>
-                            <% @duration = result["routes"][0]["legs"][0]["duration"]["text"] %>
-                            <%= @distance %>
-                            <%= @duration %>
-                        <% end %>
+    <div class="font">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-7">
+                    <div class="card"> 
+                        <div class="card-content">
+                            <div class="text-style">
+                                <div class="center"><%= @schedule.title %></div>
+                                    <div class="content">
+                                        <label>旅行期間: </label><%= @schedule.start_date.strftime("%Y年%-m月%-d日") %><label>〜</label>
+                                        <%= @schedule.end_date.strftime("%Y年%-m月%-d日") %><br>
+                                        <label>旅行する人数: </label><%= @schedule.num_p.to_s %><br>
+                                        <label> ガソリンの価格: </label><%= @schedule.fuel.to_s.concat('円') %><br>
+                                        <label> 車の燃費: </label><%= @schedule.fuel_economy.to_s.concat('(km/L)') %>
+                                        <div class="center">スケジュール表</div>
+                                        <% @sum_distance = 0 %>
+                                        <% @schedule.schedule_hoteldates.each do |schedule_hoteldate| %>
+                                            <div class="datebox">
+                                                <label>日付: </label><%= simple_format schedule_hoteldate.hotel_date.strftime("%-m月%-d日") %>
+                                                <label>宿泊先の名前: </label><%= schedule_hoteldate.hotel_name %><br>
+                                                <label>宿泊先のURL: </label><%= link_to "#{schedule_hoteldate.hotel_url}", "#{schedule_hoteldate.hotel_url}", target: :_blank, rel: "noopener noreferrer" %><br>
+                                                <label>宿泊先の料金: </label><%= schedule_hoteldate.hotel_price.to_s.concat('円') %><br>
+                                                <label>出発時刻: </label><%= schedule_hoteldate.start_time.strftime('%H:%M') %>
+                                                <% time = 0 %><% h_duration = 0 %><% m_duration = 0 %>
+                                                <% schedule_hoteldate.schedule_driveplans.each do |schedule_driveplan| %>
+                                                    <div class = "planbox1">
+                                                        <div class="center">
+                                                            <%= schedule_driveplan.d_name %>
+                                                            <% time = schedule_hoteldate.start_time.strftime('%H:%M')%>
+                                                            <% timeAry = time.split(":")%>
+                                                            <% h = timeAry[0].to_i%><% m=timeAry[1].to_i %>
+                                                            <% total_h = h+h_duration %>
+                                                            <% total_m = m+m_duration %>
+                                                            <% if total_m > 60 %>
+                                                                <% total_h +=1 %>
+                                                                <% total_m -=60 %>
+                                                            <% end %>
+                                                            <%= total_h.to_s+':'+total_m.to_s %>
+                                                        </div>
+                                                        <div class="center-ya">↓</div>
+                                                        <% params = URI.encode_www_form([["origin", schedule_driveplan.d_address], ["destination", schedule_driveplan.a_address]]) %>
+                                                        <% uri = URI.parse("https://maps.googleapis.com/maps/api/directions/json?#{params}&key=#{ENV['GOOGLE_MAP_API']}") %>
+                                                        <% response = Net::HTTP.get_response(uri) %>
+                                                        <% result = JSON.parse(response.body) %>
+                                                        <% if result["routes"].blank? %>
+                                                            <div class="center-y">
+                                                                <label>住所を取得できませんでした</label><br> 
+                                                                <label>編集画面で正しい住所を入力してください</label>
+                                                            </div>
+                                                        <% else %> 
+                                                            <% @distance = result["routes"][0]["legs"][0]["distance"]["text"] %>
+                                                            <% @duration = result["routes"][0]["legs"][0]["duration"]["text"] %>      
+                                                            <div class="center-y">
+                                                                <%= @duration = @duration.gsub(/hours|mins|hour|min/, "hours" => "時間", "mins" => "分", "hour" => "時間", "min" => "分") %><br>
+                                                                <% durationAry = @duration.split("時間")%>
+                                                                <% h_duration=durationAry[0].to_i  %>
+                                                                <% m_duration=durationAry[1].split("分") %>
+                                                                <% a_h_time = h_duration+total_h %>
+                                                                <% m_duration = m_duration[0].to_i %>
+                                                                <% a_m_time = m_duration+total_m %>
+                                                                <% if a_m_time > 60 %>
+                                                                    <% a_h_time +=1 %>
+                                                                    <% a_m_time -=60 %>
+                                                                <% end %>
+                                                                <%= @distance %>
+                                                                <% @sum_distance += @distance.gsub(/[^\d]/, ".").to_i %>
+                                                            </div>                             
+                                                        <% end %>
+                                                        <div class="center-ya">↓</div>
+                                                        <div class="center">
+                                                            <%= schedule_driveplan.a_name %><%= a_h_time.to_s+':'+a_m_time.to_s %>   
+                                                        </div>    
+                                                    </div>
+                                                    <div class="margin-left">
+                                                        <label>高速料金:</label>
+                                                        <%= schedule_driveplan.f_price.to_s.concat('円') %>    
+                                                    </div>
+                                                <% end %> 
+                                            </div>
+                                        <% end %>
+                                        <div class="center-y">
+                                        <% @sum_fuel_price = 0 %>
+                                            <div class="bl-pink"><label>総移動距離:</label><%= @sum_distance.to_s.concat('km') %></div>
+                                            <div class="bl-green">
+                                                <label>合計宿泊費用:</label>
+                                                <%= ScheduleHoteldate.sum_price.to_s.concat('円') %><br>
+                                                <label>ガソリン代:</label>
+                                                <% @sum_fuel_price = (@sum_distance.to_i * @schedule.fuel)/@schedule.fuel_economy.to_i %>
+                                                <%= @sum_fuel_price.to_s.concat('円') %><br>
+                                                <label>高速料金:</label>
+                                                <%= ScheduleDriveplan.sum_f_price.to_s.concat('円') %><br>    
+                                            </div>
+                                            <div class="bl-blue">
+                                                <% @sum = ScheduleHoteldate.sum_price + @sum_fuel_price + ScheduleDriveplan.sum_f_price %>
+                                                <% @p_sum = @sum / @schedule.num_p %>
+                                                <label>総額費用:</label>
+                                                <%= @sum.to_s.concat('円') %><br>
+                                                <label>一人あたりの料金:</label>
+                                                <%= @p_sum.to_s.concat('円') %><br>
+                                            </div>
+                                        </div>
+                                        <% if @schedule.user.id == current_user.id %>
+                                            <%= link_to "編集画面へ", edit_schedule_path(@schedule), class: "button is-success" %>
+                                        <% end %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                <div class="column is-4">
+                    <article class="panel is-link">
+                        <p class="panel-heading">
+                            By <%= @schedule.user.username %>
+                        </p>
+                        <div class="panel-block">
+                            <p class="control">
+                            <%= @schedule.user.profile %>
+                            </p>
+                        </div>
+                        <%= link_to user_path(@schedule.user), class: "panel-block" do %>
+                            <span class="panel-icon">
+                            <i class="fas fa-user" aria-hidden="true"></i>
+                            </span>
+                            <%= @schedule.user.username %> さんのページへ
+                        <% end %>
+                    </article>
                 </div>
-                
-              <% end %>
-              <div class = "right">
-                <label>宿泊費用</label><br>
-                <%= simple_format @sum_hotel_price.to_s.concat('円') %>
-              </div>
-              <% if @schedule.user.id == current_user.id %>
-                <%= link_to "編集画面へ", edit_schedule_path(@schedule), class: "button is-success" %>
-              <% end %>
             </div>
-          </div>
         </div>
-      </div>
-
-      <div class="column is-4">
-        <article class="panel is-link">
-          <p class="panel-heading">
-            By <%= @schedule.user.username %>
-          </p>
-          <div class="panel-block">
-            <p class="control">
-              <%= @schedule.user.profile %>
-            </p>
-          </div>
-          <%= link_to user_path(@schedule.user), class: "panel-block" do %>
-            <span class="panel-icon">
-              <i class="fas fa-user" aria-hidden="true"></i>
-            </span>
-            <%= @schedule.user.username %> さんのページへ
-          <% end %>
-        </article>
-      </div>
     </div>
-  </div>
 </section>
 
 

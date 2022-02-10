@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_06_071417) do
+ActiveRecord::Schema.define(version: 2022_02_10_003955) do
 
   create_table "map_apis", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
@@ -38,6 +38,14 @@ ActiveRecord::Schema.define(version: 2022_02_06_071417) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "distance"
     t.string "duration"
+    t.string "d_name"
+    t.string "a_name"
+    t.time "s_time"
+    t.integer "meal_price"
+    t.string "name"
+    t.text "comment"
+    t.string "image_id"
+    t.integer "f_price"
     t.index ["schedule_hoteldate_id"], name: "index_schedule_driveplans_on_schedule_hoteldate_id"
   end
 
@@ -50,6 +58,7 @@ ActiveRecord::Schema.define(version: 2022_02_06_071417) do
     t.integer "hotel_price"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.time "start_time"
     t.index ["schedule_id"], name: "index_schedule_hoteldates_on_schedule_id"
   end
 
@@ -80,6 +89,8 @@ ActiveRecord::Schema.define(version: 2022_02_06_071417) do
     t.string "profile_image_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "provider"
+    t.string "uid"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

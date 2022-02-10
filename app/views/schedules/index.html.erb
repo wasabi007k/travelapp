@@ -1,45 +1,44 @@
 <section class="hero is-success">
-  <div class="hero-body">
-    <div class="container">
-      <h1 class="title">
-        スケジュール一覧
-      </h1>
+    <div class="hero-body">
+        <div class="container">
+        <h1 class="title">
+            スケジュール一覧
+        </h1>
+        </div>
     </div>
-  </div>
 </section>
 
 <section class="section">
-  <div class="container">
-    <div class="columns is-multiline">
-      <% @schedules.each do |schedule| %>
-        <div class="column is-4">
-          <div class="card">
-            <div class="card-image">
-              <figure class="image is-4by3">
-                <%= link_to schedule_path(schedule) do %>
-                  <%= attachment_image_tag schedule, :image %>
-                <% end %>
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="media">
-                <div class="media-left">
-                  <figure class="image is-48x48">
-                    <%= attachment_image_tag schedule.user, :profile_image, fallback: "no-image.png", class: "profile_image" %>
-                  </figure>
+    <div class="container">
+        <div class="columns is-multiline">
+            <% @schedules.each do |schedule| %>
+                <div class="column is-4">
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <%= link_to schedule_path(schedule) do %>
+                                <%= attachment_image_tag schedule, :image, fallback: "no-image.jpeg" %>
+                                <% end %>
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-left">
+                                    <figure class="image is-48x48">
+                                        <%= attachment_image_tag schedule.user, :profile_image, fallback: "no-image.jpeg", class: "profile_image" %>
+                                    </figure>
+                                </div>
+                                <div class="media-content">
+                                    <div class="title"><%=link_to schedule.user.username, user_path(schedule.user) %></div>
+                                </div>
+                            </div>
+                            <div class="content">
+                                <time><%= schedule.updated_at.strftime("%Y-%m-%d %H:%M") %></time>更新
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="media-content">
-                  <div class="title"><%=link_to schedule.user.username, user_path(schedule.user) %></div>
-                </div>
-              </div>
-
-              <div class="content">
-                <time><%= schedule.updated_at.strftime("%Y-%m-%d %H:%M") %></time>更新
-              </div>
-            </div>
-          </div>
+            <% end %>
         </div>
-      <% end %>
     </div>
-  </div>
 </section>

@@ -1,2 +1,54 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<!--
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Travelapp</title>
+    <% csrf_meta_tags %>
+    <% csp_meta_tag %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha256-UzFD2WYH2U1dQpKDjjZK72VtPeWP50NoJjd26rnAdUI=" crossorigin="anonymous" />
+    <% stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  </head>
+  <body>
+    <div class="top-wrapper">
+      <h1>DRIVETRAVELAPP</h1>
+      <p>Travelappは旅行スケジュール作成アプリです。</p>
+      <div class="message-wrapper">
+        <span class="btn message"><% link_to "スケジュールを作成", new_schedule_path %></span>
+      </div>
+    </div>
+  </body>
+</html>
+-->
+<section class="section">
+  <article class="media">
+    <div class="media-content">
+      <div class="content has-text-centered">
+        <p>
+          <strong class="is-size-1" style="font-family: cursive;">DriveTravelapp</strong>
+        </p>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-5">
+          <br>
+          <%= link_to "ログイン", new_user_session_path, class: "button is-warning is-fullwidth" %>
+          <br>
+          <%= link_to "新規登録", new_user_registration_path, class: "button is-warning is-fullwidth" %>
+        </div>
+      </div>
+    </div>
+  </article>
+  <br>
+  <div class="columns is-centered">
+    <div class="column">
+        <div class="top-wrapper">
+            <div class="container">
+                <h1>DRIVE TRAVEL APP.</h1>
+                <p>DRIVE TRAVEL APPはあなたのドライブ旅行を快適にするためのスケジュール管理アプリです。</p>
+            </div>
+        </div>
+      </figure>
+    </div>
+  </div>
+</section>
+

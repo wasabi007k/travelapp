@@ -1,75 +1,79 @@
 <section class="hero is-success">
-  <div class="hero-body">
-    <div class="container">
-      <h1 class="title">
-        スケジュール編集
-      </h1>
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                スケジュール編集
+            </h1>
+        </div>
     </div>
-  </div>
 </section>
 
 <% if @schedule.errors.any? %>
-  <div class="notification is-danger">
-    <h2><%= pluralize(@schedule.errors.count, "error") %> prohibited this object from being saved: not successfully</h2>
-    <ul>
-      <% @schedule.errors.full_messages.each do |message| %>
-      <li><%= message %></li>
-      <% end %>
-    </ul>
-  </div>
+    <div class="notification is-danger">
+        <h2><%= pluralize(@schedule.errors.count, "error") %> prohibited this object from being saved: not successfully</h2>
+        <ul>
+            <% @schedule.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+            <% end %>
+        </ul>
+    </div>
 <% end %>
 
 <section class="section">
-  <div class="container">
-    <div class="columns is-centered">
-      <div class="column is-6">
-        <%= form_with(model: @schedule, local: true) do |f| %>
-            <div class="field">
-                <%= f.label :title, "旅のタイトル", class: "label" %>
-                <%= f.text_field :title, class: "input" %>
-            </div>
-            <div class="field">
-                <div class="form-inline">
-                    <tr valign="middle" >
-                        <%= f.label :body, "出発日", class: "label" %>
-                        <%= f.date_field :start_date, class: "input" %>
-                    </tr>
-                    <tr valign="middle" >
-                        <%= f.label :body, "帰着日", class: "label" %>
-                        <%= f.date_field :end_date, class: "input" %>
-                    </tr>
-                </div>
-            </div>
-            <div class="field">
-                <%= f.label :num_p, "人数", class: "label" %>
-                <%= f.number_field :title, class: "input" %>
-            </div>
-            <div class="field">
-                <%= f.label :image, "写真", class: "label" %>
-                <%= f.attachment_field :image, class: "input" %>
-            </div>
-
-            <div class="plan-post">
-                <div class="recipe-ingredients">
-                    <div id="detail-association-insertion-point"></div>
-                    <div class="btn-right btn-adddate">
-                        <%= link_to_add_association "日付を追加", f, :schedule_hoteldates,
-                        class: "btn",
-                        data: {
-                        association_insertion_node: '#detail-association-insertion-point',
-                        association_insertion_method: 'append'
-                        }%>
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-6">
+                <%= form_with(model: @schedule, local: true) do |f| %>
+                    <div class="field">
+                        <%= f.label :title, "旅のタイトル", class: "label" %>
+                        <%= f.text_field :title, class: "input" %>
                     </div>
-                    <div class="mx-auto">
-                        <%= f.fields_for :schedule_hoteldates do |schedule_hoteldate| %>
-                            <%= render "schedules/schedule_hoteldate_fields", f: schedule_hoteldate %>
-                        <% end %>
+                    <div class="field">
+                        <div class="form-inline">
+                            <tr valign="middle" >
+                                <%= f.label :body, "出発日", class: "label" %>
+                                <%= f.date_field :start_date, class: "input" %>
+                            </tr>
+                            <tr valign="middle" >
+                                <%= f.label :body, "帰着日", class: "label" %>
+                                <%= f.date_field :end_date, class: "input" %>
+                            </tr>
+                        </div>
                     </div>
-                </div>
+                    <div class="field">
+                        <%= f.label :num_p, "旅行する人数", class: "label" %>
+                        <%= f.number_field :num_p, size: 50 %>
+                    </div>
+                    <%= f.select :fuel_economy, [["軽自動車", 18], ["普通自動車", 15]], include_blank: "車の種類を選択" %>
+                    <div class="field">
+                        <%= f.label :fuel, "給油地域のガソリン代(km/L)", class: "label" %>
+                        <%= f.number_field :fuel, size: 20,class: "input" %>
+                    </div>
+                    <div class="field">
+                        <%= f.label :image, "写真", class: "label" %>
+                        <%= f.attachment_field :image, class: "input" %>
+                    </div>
+                    <div class="plan-post">
+                        <div class="recipe-ingredients">
+                            <div id="detail-association-insertion-point"></div>
+                            <div class="btn-right btn-adddate">
+                                <%= link_to_add_association "日付を追加", f, :schedule_hoteldates,
+                                class: "btn",
+                                data: {
+                                association_insertion_node: '#detail-association-insertion-point',
+                                association_insertion_method: 'append'
+                                }%>
+                            </div>
+                            <div class="mx-auto">
+                                <%= f.fields_for :schedule_hoteldates do |schedule_hoteldate| %>
+                                    <%= render "schedules/schedule_hoteldate_fields", f: schedule_hoteldate %>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+                    <%= f.submit '更新', class: "button is-success" %>
+                <% end %>
             </div>
-            <%= f.submit '更新', class: "button is-success" %>
-        <% end %>
-      </div>
+        </div>
     </div>
-  </div>
 </section>

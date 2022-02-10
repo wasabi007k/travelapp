@@ -1,16 +1,41 @@
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhijDhCRPrT1XrK8ygyqMZsCzIWSdqpow&callback=initMap" async defer></script>
+
 <div class="nested-fields">
     <div class="planbox1">
-    <%= f.label :start_time, "出発時刻", class: "label" %>
-    <%= f.time_field :start_time, class: "form-control", placeholder: "開始時刻" %>
-        <%= f.label :d_address, "出発地点の名前または住所", class: "label" %>
-        <%= f.text_field :d_address, :size=>"60", class: "input" %>
-        <%= f.label :a_address, "到着地点の名前または住所", class: "label" %>
-        <%= f.text_field :a_address, :size=>"60", class: "input" %>
-        <%= @distance %> 
-        <%= @duration %>   
+        <div class = "text-left">
+            <table align="center" >
+                <tr>
+                    <td>
+                        <%= f.label :d_name, "出発点の名前", class: "label" %>
+                        <%= f.text_field :d_name, size: "15", class: "form-input" %>
+                    </td>
+                    <td>
+                        <%= f.label :d_address, "出発地点の詳細な住所", class: "label" %>
+                        <%= f.text_field :d_address, size: "35", class: "form-input" %>
+                    </td>
+                </tr>
+            </table>
+            <table align="center" >
+                <tr>
+                    <td>
+                        <%= f.label :d_name, "到着点の名前", class: "label" %>
+                        <%= f.text_field :a_name, size: "15", class: "form-input" %>
+                    </td>
+                    <td>
+                        <%= f.label :d_address, "到着地点の詳細な住所", class: "label" %>
+                        <%= f.text_field :a_address, size: "35", class: "form-input" %>
+                    </td>
+                </tr>
+            </table>
+            <%= f.label :s_time, "高速料金", class: "label" %>
+            <%= f.number_field :f_price, size: "10" %>
+            <%= f.label :s_time, "滞在時間", class: "label" %>
+            <%= f.time_field :s_time, size: "10" %> 
+            <%= f.select :name, [["観光", "観光"], ["食事", "食事"]], include_blank: "ジャンルを選択" %>
+            <%= f.label :s_time, "料金", class: "label" %>
+            <%= f.number_field :meal_price, size: "30" %>
+        </div>
         <div class="btn-right">
-            <%= link_to_remove_association "ドライブプランを削除",f , class: "btn btn-secondary btn-block" %>
+            <%= link_to_remove_association "プランを削除",f , class: "btn btn-secondary btn-block" %>
         </div>
     </div>
 </div>
