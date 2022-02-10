@@ -17,7 +17,5 @@ require('jquery')
 
 
 require("src/cocoon")
-require('underscore') 
+ 
 
-require('popper')
-require('bootstrap-sprockets')
