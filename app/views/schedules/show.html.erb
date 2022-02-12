@@ -31,21 +31,36 @@
                                                 <label>宿泊先のURL: </label><%= link_to "#{schedule_hoteldate.hotel_url}", "#{schedule_hoteldate.hotel_url}", target: :_blank, rel: "noopener noreferrer" %><br>
                                                 <label>宿泊先の料金: </label><%= schedule_hoteldate.hotel_price.to_s.concat('円') %><br>
                                                 <label>出発時刻: </label><%= schedule_hoteldate.start_time.strftime('%H:%M') %>
-                                                <% time = 0 %><% h_duration = 0 %><% m_duration = 0 %>
+                                                <% i = 0 %>
+                                                <% time = 0 %>
+                                                <% stay_htime_str =["0"]  %>
+                                                <% stay_mtime_str =["0"]  %>
+                                                <% h_duration_str = ["0"] %>
+                                                <% m_duration_str = ["0"] %>
                                                 <% schedule_hoteldate.schedule_driveplans.each do |schedule_driveplan| %>
                                                     <div class = "planbox1">
                                                         <div class="center">
                                                             <%= schedule_driveplan.d_name %>
                                                             <% time = schedule_hoteldate.start_time.strftime('%H:%M')%>
                                                             <% timeAry = time.split(":")%>
-                                                            <% h = timeAry[0].to_i%><% m=timeAry[1].to_i %>
-                                                            <% total_h = h+h_duration %>
-                                                            <% total_m = m+m_duration %>
-                                                            <% if total_m > 60 %>
-                                                                <% total_h +=1 %>
-                                                                <% total_m -=60 %>
+                                                            <% h = timeAry[0].to_i%>
+                                                            <% m = timeAry[1].to_i %> 
+                                                            <% h_duration_i = h_duration_str.map(&:to_i) %>
+                                                            <% m_duration_i = m_duration_str.map(&:to_i) %>
+                                                            <% h_duration_sum = h_duration_i.sum %>
+                                                            <% m_duration_sum = m_duration_i.sum %>
+                                                            <% s_time_h = h+h_duration_sum %> 
+                                                            <% s_time_m = m+m_duration_sum %>
+                                                            <% stay_mtime_i = stay_mtime_str.map(&:to_i) %>
+                                                            <% stay_htime_i = stay_htime_str.map(&:to_i) %>
+                                                            <% s_time_h = s_time_h + stay_htime_i.sum %>
+                                                            <% s_time_m = s_time_m + stay_mtime_i.sum %>
+                                                            <% if s_time_m > 60 %>
+                                                                <% s_time_h +=1 %>
+                                                                <% s_time_m -=60 %>
                                                             <% end %>
-                                                            <%= total_h.to_s+':'+total_m.to_s %>
+                                                            <%= s_time_h.to_s+':'+s_time_m.to_s %>
+                                                            
                                                         </div>
                                                         <div class="center-ya">↓</div>
                                                         <% params = URI.encode_www_form([["origin", schedule_driveplan.d_address], ["destination", schedule_driveplan.a_address]]) %>
@@ -62,28 +77,54 @@
                                                             <% @duration = result["routes"][0]["legs"][0]["duration"]["text"] %>      
                                                             <div class="center-y">
                                                                 <%= @duration = @duration.gsub(/hours|mins|hour|min/, "hours" => "時間", "mins" => "分", "hour" => "時間", "min" => "分") %><br>
-                                                                <% durationAry = @duration.split("時間")%>
-                                                                <% h_duration=durationAry[0].to_i  %>
-                                                                <% m_duration=durationAry[1].split("分") %>
-                                                                <% a_h_time = h_duration+total_h %>
-                                                                <% m_duration = m_duration[0].to_i %>
-                                                                <% a_m_time = m_duration+total_m %>
-                                                                <% if a_m_time > 60 %>
-                                                                    <% a_h_time +=1 %>
-                                                                    <% a_m_time -=60 %>
+                                                                <% if @duration.include? "時間"%>
+                                                                    <% durationAry = @duration.split("時間")%>
+                                                                    <% durationAry[1].split("分") %>
+                                                                    <% h_duration_str.push(durationAry[0]) %>
+                                                                    <% m_durationAry = durationAry[1] %>
+                                                                <% else %>
+                                                                    <% durationAry = @duration.split("分") %>
+                                                                    <% m_durationAry = durationAry[0] %>
+                                                                <% end %>
+                                                                <% h_duration_i = h_duration_str.map(&:to_i) %>
+                                                                <% m_duration_str.push(m_durationAry) %>
+                                                                <% m_duration_i = m_duration_str.map(&:to_i) %>
+                                                                <% h_duration_sum = h_duration_i.sum %>
+                                                                <% m_duration_sum = m_duration_i.sum %>
+                                                                <% e_time_h = h+h_duration_sum %>
+                                                                <% e_time_m = m+m_duration_sum %>
+                                                                <% e_time_h += stay_htime_i.sum %>
+                                                                <% e_time_m += stay_mtime_i.sum %>
+                                                                <% if e_time_m > 60 %>
+                                                                    <% e_time_h +=1 %>
+                                                                    <% e_time_m -=60 %>
                                                                 <% end %>
                                                                 <%= @distance %>
+                                                                <%= @dis %>
+                                                                <%= @du %>
+                                                                <%= @comment %>
                                                                 <% @sum_distance += @distance.gsub(/[^\d]/, ".").to_i %>
                                                             </div>                             
                                                         <% end %>
                                                         <div class="center-ya">↓</div>
                                                         <div class="center">
-                                                            <%= schedule_driveplan.a_name %><%= a_h_time.to_s+':'+a_m_time.to_s %>   
+                                                            <%= schedule_driveplan.a_name %>
+                                                            <%= e_time_h.to_s+':'+e_time_m.to_s %>  
+                                                            <% stay_time = schedule_driveplan.s_time.strftime('%H:%M')%>
+                                                            <% stay_time_ary = stay_time.split(":") %>
+                                                            <% stay_htime_str.push(stay_time_ary[0]) %>
+                                                            <% stay_mtime_str.push(stay_time_ary[1]) %> 
                                                         </div>    
                                                     </div>
                                                     <div class="margin-left">
                                                         <label>高速料金:</label>
-                                                        <%= schedule_driveplan.f_price.to_s.concat('円') %>    
+                                                        <%= schedule_driveplan.f_price.to_s.concat('円') %><br>
+                                                        <label>滞在時間:</label>
+                                                        <%= schedule_driveplan.s_time.strftime('%H:%M') %><br>   
+                                                        <label>滞在するジャンル:</label>
+                                                        <%= schedule_driveplan.name %><br>
+                                                        <label>観光または食事にかかる料金:</label>
+                                                        <%= schedule_driveplan.meal_price.to_s.concat('円') %> 
                                                     </div>
                                                 <% end %> 
                                             </div>

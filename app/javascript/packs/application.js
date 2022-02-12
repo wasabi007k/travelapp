@@ -14,8 +14,5 @@ Turbolinks.start()
 ActiveStorage.start()
 
 require('jquery') 
-
-
+require('jquery_ujs')
 require("src/cocoon")
- 
-

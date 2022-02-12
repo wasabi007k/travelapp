@@ -25,9 +25,7 @@ class SchedulesController < ApplicationController
   end
 
   def show
-    @schedule = Schedule.find(params[:id])                                    
-    
-    
+    @schedule = Schedule.find(params[:id])  
     
   end
 
@@ -63,7 +61,7 @@ class SchedulesController < ApplicationController
                                     :hotel_name, :hotel_url, :imgage, :hotel_price, :start_time, :_destroy, 
                                     schedule_driveplans_attributes:[:id, :schedule_hoteldate_id,
                                     :start_time, :address, :price, :d_address, :a_address, :distance, :duration, :d_name,
-                                    :a_name, :f_price, :_destroy]]
+                                    :a_name, :f_price, :s_time, :meal_price, :name, :_destroy]]
                                     ).merge(user_id: current_user.id)
     
   end

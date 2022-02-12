@@ -8,6 +8,11 @@ class ScheduleDriveplan < ApplicationRecord
     sum_price = 0
     sum(:f_price)
   end
-
+  with_options presence: true do
+    validates :d_address
+    validates :a_address
+    validates :d_name
+    validates :a_name
+  end
   
 end
