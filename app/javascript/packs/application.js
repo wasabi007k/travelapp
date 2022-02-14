@@ -15,10 +15,4 @@ ActiveStorage.start()
 
 require('jquery') 
 require('jquery_ujs')
-
-
 require("src/cocoon")
-require('underscore') 
-
-require('popper')
-require('bootstrap-sprockets')
