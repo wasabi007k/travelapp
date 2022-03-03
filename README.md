@@ -7,7 +7,7 @@ travelapp is a travel scheduling application targeted at car travel!
  
 # DEMO
  
-"hoge"の魅力が直感的に伝えわるデモ動画や図解を載せる
+
  
 # Features
  
