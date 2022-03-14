@@ -13,6 +13,9 @@ Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
 
-require('jquery') 
-require('jquery_ujs')
-require("src/cocoon")
+//= require jquery 
+//= require jquery_ujs
+//= require activestorage
+//= require turbolinks
+//= require_tree .
+//= require src/cocoon

@@ -70,6 +70,7 @@ gem 'rails-ujs'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
+gem "jquery-rails"
 
 group :production do
   gem 'pg'
